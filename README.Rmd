@@ -1,0 +1,16 @@
+---
+title: "Rich Molecular Health Lab - Logistics Repo"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Welcome to the Logistics Repository
+
+This is a space in the Rich Molecular Health Lab's github site where we can store and share logistical items like schedules, progress reports, etc.
+
+## Graduate Students
+
+If you are a new graduate student in the Biology MS program, then you should check out the [tentative schedule linked here.](https://rich-molecular-health-lab.github.io/logistics/grad_plan.html)
