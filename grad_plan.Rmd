@@ -1,0 +1,27 @@
+---
+title: "Rich Lab Grad Student Guide"
+author: "Alicia Rich"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: flatly
+    toc: false
+    code_folding: "hide"
+    fig_caption: true
+    df_print: paged
+                     
+---
+
+```{r include=FALSE}
+source("setup.R")
+source("helper_functions.R")
+source("timeline_ms.R")
+timeline <- timeline_react()
+```
+
+```{r out.width="100%"}
+timeline
+```
+
+
