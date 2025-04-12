@@ -1,0 +1,257 @@
+---
+title: "Conferences"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme:
+      bootswatch: cerulean
+    toc: true
+    code_folding: "hide"
+    fig_caption: true
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  comment = ""   ,
+  echo    = TRUE
+  )
+source("setup.R")
+library(countrycode)
+```
+
+Browse the options from this page if you are interested in attending or presenting at a workshop or conference. If you plan to present any work related to the Rich Lab, then you should start discussing this with Dr. Rich as soon as possible. Some of the options on here are conferences she attends routinely, while others are simply events of interest that might be a good fit for our lab's projects.  
+  
+You should also keep in mind that FUSE and GRACA awards can cover the cost of your registration, travel, lodging, etc. Dr. Rich can also help you research other funding options to make sure the cost is not a barrier.
+
+## Zoos
+
+```{r include=FALSE}
+zoos <- list(
+  "NWPTAG Workshop" = list(
+    "NWPTAG (New World Primate Taxon Advisory Group)",
+    ymd("2025-10-12")                                ,
+    ymd("2025-10-17")                                ,
+    290.00                                           ,
+    "Brookfield Zoo"                                 , 
+    "Chicago"                                        , 
+    "IL"                                             , 
+    "USA"                                            , 
+    "https://bpzoo.ticketapp.org/portal/product/64"
+    ),
+  "International Gorilla Workshop" = list(
+    "Detroit Zoological Society"                     ,
+    ymd("2025-11-09")                                ,
+    ymd("2025-11-14")                                ,
+    350.00                                           ,
+    "Detroit Zoo"                                    , 
+    "Detroit"                                        , 
+    "MI"                                             , 
+    "USA"                                            , 
+    "https://detroitzoo.org/2025-international-gorilla-workshop/"
+  ),
+  "ZWNF/NAG Conference" = list(
+    "NAG (Nutrition Advisory Group)"                 ,
+    ymd("2025-10-19")                                ,
+    ymd("2025-10-22")                                ,
+    NULL                                             ,
+    "Oklahoma City Zoo"                              , 
+    "Oklahoma City"                                  , 
+    "OK"                                             , 
+    "USA"                                            , 
+    "https://nagonline.net/14434/save-the-date-zwnf-nag-conference-19-22-october-2025/"
+  ),
+  "4th International Symposium on Zoo Animal Welfare" = list(
+    "International Symposium on Zoo Animal Welfare"  ,
+    ymd("2025-05-19")                                ,
+    ymd("2025-05-21")                                ,
+    450.00                                           ,
+    "Brookfield Zoo"                                 , 
+    "Chicago"                                        , 
+    "IL"                                             , 
+    "USA"                                            , 
+    "https://www.brookfieldzoo.org/iszaw"
+  ),
+  "AAZV 57th Annual Conference" = list(
+    "AAZV (American Association of Zoo Veterinarians",
+    ymd("2025-08-23")                                ,
+    ymd("2025-08-29")                                ,
+    1095.00                                           ,
+    "Kansas City Zoo"                                , 
+    "Kansas City"                                    , 
+    "KS"                                             , 
+    "USA"                                            , 
+    "https://whova.com/web/1LQHLiOTctQ2awCafFl96%40EyKL%40gL4I3Yx5zE7ZMg2k%3D/"
+  ),
+  "AZA Annual Conference" = list(
+    "AZA (Association of Zoos and Aquariums)"        ,
+    ymd("2025-09-13")                                ,
+    ymd("2025-09-18")                                ,
+    NULL                                             ,
+    "ZooTampa at Lowry Park"                         , 
+    "Tampa"                                          , 
+    "FL"                                             , 
+    "USA"                                            , 
+    "https://www.aza.org/conferences-meetings?refresh=true"
+  ),
+  "AZA Annual Conference" = list(
+    "AZA (Association of Zoos and Aquariums)"        ,
+    ymd("2026-09-26")                                ,
+    ymd("2026-10-01")                                ,
+    NULL                                             ,
+    "Oregon Zoo"                                     , 
+    "Portland"                                       , 
+    "OR"                                             , 
+    "USA"                                            , 
+    "https://www.aza.org/conferences-meetings?refresh=true"
+  ),
+  "AZA Annual Conference" = list(
+    "AZA (Association of Zoos and Aquariums)"        ,
+    ymd("2027-08-28")                                ,
+    ymd("2027-09-02")                                ,
+    NULL                                             ,
+    "Cleveland Metroparks Zoo"                       , 
+    "Cleveland"                                      , 
+    "OH"                                             , 
+    "USA"                                            , 
+    "https://www.aza.org/conferences-meetings?refresh=true"
+  ),
+  "AZA Midyear Meeting" = list(
+    "AZA (Association of Zoos and Aquariums)"        ,
+    ymd("2026-03-21")                                ,
+    ymd("2026-03-26")                                ,
+    NULL                                             ,
+    "Zoo Atlanta"                                    , 
+    "Atlanta"                                        , 
+    "GA"                                             , 
+    "USA"                                            , 
+    "https://www.aza.org/conferences-meetings?refresh=true"
+  ),
+  "EAZA Animal Welfare Forum" = list(
+    "EAZA (European Association of Zoos and Aquariums)",
+    ymd("2026-03-16")                                ,
+    ymd("2026-03-19")                                ,
+    NULL                                             ,
+    "Zoo Antwerp"                                    , 
+    "Antwerp"                                        , 
+    ""                                               , 
+    "Belgium"                                        , 
+    "https://www.eaza.net/events/"
+  ),
+  "EAZA Conservation Forum" = list(
+    "EAZA (European Association of Zoos and Aquariums)",
+    ymd("2026-05-19")                                ,
+    ymd("2026-05-22")                                ,
+    NULL                                             ,
+    "Opel-Zoo"                                       , 
+    "Opel"                                           , 
+    ""                                               , 
+    "Germany"                                        , 
+    "https://www.eaza.net/events/"
+  )
+) %>%
+  map_depth(., 1, \(x) set_names(x, 
+                                 c("Organization",
+                                   "Start",
+                                   "End",
+                                   "Fee",
+                                   "Host",
+                                   "City",
+                                   "State",
+                                   "Country",
+                                   "Link")
+                                 )) %>%
+  enframe("Event", "Details") %>%
+  unnest_wider(Details) %>%
+  mutate(icon = countryname(Country, destination = "unicode.symbol")) %>%
+  arrange(Start, Country) %>%
+  select(Start,
+         Event,
+         Host,
+         Organization,
+         Fee,
+         End    ,
+         City   ,
+         State  ,
+         Country,
+         Link   ,
+         icon   
+         )
+```
+
+```{r include=FALSE}
+tbl <-  reactable(
+    data    = zoos,
+    theme   = cerulean(),
+    columns = list(
+      Start = colDef(
+        name = "Dates",
+        html = TRUE,
+        maxWidth = 130,
+        cell = function(value, index) {
+          Days  <- div(wday(value, label = TRUE), " - ", wday(zoos$End[index], label = TRUE))
+          Start <- paste0(month(value, label = TRUE), " ", day(value))
+          End   <- if (month(value) == month(zoos$End[index])) day(zoos$End[index]) else  paste0(month(zoos$End[index], label = TRUE), " ", day(zoos$End[index]))
+          Year  <- year(value)
+            
+          div(
+            div(Start, " - ", End),
+            div(tags$i(Days)),
+            div(style = "font-weight: 600", Year)
+          )
+        }
+      ),
+      Event = colDef(
+        name = "Event",
+        html = TRUE,
+        minWidth = 280,
+        cell = function(value, index) {
+          icon <- span(icon("link"))
+          org  <- tags$i(zoos$Organization[index])
+          link <- tags$a(href = zoos$Link[index], icon)
+          div(
+          div(value, " ", link),
+          div(style = "font-size: 0.75rem", org)
+          )
+        }
+      ),
+      Host = colDef(
+        name = "Location",
+        html = TRUE,
+        minWidth = 150,
+        cell = function(value, index) {
+          flag    <- paste0(zoos$icon[index], " ")
+          Country <- zoos$Country[index]
+          inst    <- value
+          City    <- zoos$City[index]
+          State   <- if (str_starts(zoos$State[index], "\\w+")) paste0(", ", zoos$State[index]) else ""
+          div(
+          div(style = "font-weight: 600", inst),
+          div(style = "font-size: 0.75rem", City, State),
+          div(style = "font-size: 0.75rem", flag, Country)
+          )
+        }
+      ),
+      Fee = colDef(
+        name   = "Fee",
+        align  = "left",
+        maxWidth = 80,
+        format = colFormat(currency = "USD", separators = TRUE)
+      ),
+      Organization = colDef(show = FALSE),
+      End          = colDef(show = FALSE),
+      City         = colDef(show = FALSE),
+      State        = colDef(show = FALSE),
+      Country      = colDef(show = FALSE),
+      Link         = colDef(show = FALSE),
+      icon         = colDef(show = FALSE)
+    )
+)
+```
+
+```{r out.width="100%"}
+tbl
+```
+
